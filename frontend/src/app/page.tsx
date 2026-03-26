@@ -1,11 +1,12 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Header,
+import { Header,
   SectionHeading,
   StatCard,
   CourseCard,
@@ -15,7 +16,6 @@ import {
   Slider,
   Footer,
 } from "@/components";
-import { API_BASE } from "@/lib/api";
 import { TESTIMONIALS_SLIDER, TOP_RANKERS as TOP_RANKERS_FALLBACK, FACULTY_SHOWCASE } from "@/data/home";
 import { useCounter } from "@/lib/useCounter";
 
@@ -59,7 +59,7 @@ type Faculty = {
 };
 
 export default function HomePage() {
-  const [stats, setStats] = useState<StatPayload | null>(null);
+  const [stats, setStats] = useState<StatPayload | null>({yearsOfExperience: 10, totalStudents: 1000, successfulResults: 500, expertFaculty: 20});
   const [courses, setCourses] = useState<Course[]>([]);
   const [trending, setTrending] = useState<Course[]>([]);
   const [results, setResults] = useState<Result[]>([]);
@@ -78,30 +78,6 @@ export default function HomePage() {
   const studentsCounter = useCounter(stats?.totalStudents ?? 0);
   const resultsCounter = useCounter(stats?.successfulResults ?? 0);
   const facultyCounter = useCounter(stats?.expertFaculty ?? 0);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const [statsRes, coursesRes, trendingRes, resultsRes, rankersRes, facultyRes] = await Promise.all([
-          fetch(`${API_BASE}/public/highlights`),
-          fetch(`${API_BASE}/public/courses`),
-          fetch(`${API_BASE}/public/courses/trending`),
-          fetch(`${API_BASE}/public/results/top`),
-          fetch(`${API_BASE}/public/rankers/top`),
-          fetch(`${API_BASE}/public/faculty`),
-        ]);
-        if (statsRes.ok) setStats(await statsRes.json());
-        if (coursesRes.ok) setCourses(await coursesRes.json());
-        if (trendingRes.ok) setTrending(await trendingRes.json());
-        if (resultsRes.ok) setResults(await resultsRes.json());
-        if (rankersRes.ok) setRankers(await rankersRes.json());
-        if (facultyRes.ok) setFaculty(await facultyRes.json());
-      } catch {
-        // ignore
-      }
-    }
-    load();
-  }, []);
 
   const handleNavClick = (id: string) => {
     const el = document.getElementById(id);

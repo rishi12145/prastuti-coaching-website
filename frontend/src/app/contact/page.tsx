@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Header, Footer, SectionHeading } from "@/components";
 
 export const metadata = {

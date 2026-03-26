@@ -1,9 +1,10 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header, Footer, SectionHeading, CourseCard } from "@/components";
-import { API_BASE } from "@/lib/api";
 
 type Course = {
   _id: string;
@@ -20,22 +21,6 @@ type Course = {
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [trending, setTrending] = useState<Course[]>([]);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const [coursesRes, trendingRes] = await Promise.all([
-          fetch(`${API_BASE}/public/courses`),
-          fetch(`${API_BASE}/public/courses/trending`),
-        ]);
-        if (coursesRes.ok) setCourses(await coursesRes.json());
-        if (trendingRes.ok) setTrending(await trendingRes.json());
-      } catch {
-        // ignore
-      }
-    }
-    load();
-  }, []);
 
   return (
     <div className="app-shell">

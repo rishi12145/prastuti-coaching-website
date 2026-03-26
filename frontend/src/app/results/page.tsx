@@ -1,9 +1,10 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header, Footer, SectionHeading, ResultCard } from "@/components";
-import { API_BASE } from "@/lib/api";
 
 type Result = {
   _id: string;
@@ -15,18 +16,6 @@ type Result = {
 
 export default function ResultsPage() {
   const [results, setResults] = useState<Result[]>([]);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch(`${API_BASE}/public/results/top`);
-        if (res.ok) setResults(await res.json());
-      } catch {
-        // ignore
-      }
-    }
-    load();
-  }, []);
 
   return (
     <div className="app-shell">

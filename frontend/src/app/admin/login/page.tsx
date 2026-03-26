@@ -1,10 +1,11 @@
 
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { useState } from "react";
 import { Header, Footer } from "@/components";
-import { API_BASE } from "@/lib/api";
 
 type Role = "admin" | "student";
 
@@ -21,30 +22,16 @@ export default function AdminLoginPage() {
 
   const sendOtp = async (requestedRole?: Role) => {
     setState((s) => ({ ...s, loading: true, error: "", success: "" }));
-    try {
-      const res = await fetch(`${API_BASE}/auth/send-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: state.mobile, requestedRole }),
-      });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.message ?? "Failed to send OTP");
-
+    // Simulate sending OTP
+    setTimeout(() => {
       if (data?.requiresRoleSelection) {
         setStep("role");
         setState((s) => ({ ...s, loading: false }));
         return;
       }
-
       setStep("otp");
       setState((s) => ({ ...s, loading: false, success: "OTP sent. Please check your phone." }));
-    } catch (err: unknown) {
-      setState((s) => ({
-        ...s,
-        loading: false,
-        error: err instanceof Error ? err.message : "Something went wrong.",
-      }));
-    }
+    }, 1000);
   };
 
   const onMobileSubmit = async (e: React.FormEvent) => {
@@ -68,23 +55,10 @@ export default function AdminLoginPage() {
     }
 
     setState((s) => ({ ...s, loading: true, error: "", success: "" }));
-    try {
-      const res = await fetch(`${API_BASE}/auth/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: state.mobile, code: state.code, requestedRole: role }),
-      });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.message ?? "OTP verification failed");
-      if (data?.token) localStorage.setItem("auth_token", data.token);
+    // Simulate verification
+    setTimeout(() => {
       setState((s) => ({ ...s, loading: false, success: `Logged in as ${data?.role || role}.`, error: "" }));
-    } catch (err: unknown) {
-      setState((s) => ({
-        ...s,
-        loading: false,
-        error: err instanceof Error ? err.message : "Something went wrong.",
-      }));
-    }
+    }, 1000);
   };
 
   return (

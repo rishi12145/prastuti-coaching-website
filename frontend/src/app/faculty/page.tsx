@@ -1,6 +1,7 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { Header, Footer, SectionHeading, FacultyCard } from "@/components";
-import { API_BASE } from "@/lib/api";
 
 export const metadata = {
   title: "Faculty | Prastuti Coaching Institute",
@@ -16,19 +17,8 @@ type Faculty = {
   bio?: string;
 };
 
-export default async function FacultyPage() {
+export default function FacultyPage() {
   let faculty: Faculty[] = [];
-
-  try {
-    const res = await fetch(`${API_BASE}/public/faculty`, {
-      cache: "no-store",
-    });
-    if (res.ok) {
-      faculty = await res.json();
-    }
-  } catch {
-    // ignore and show empty state
-  }
 
   return (
     <div className="app-shell">

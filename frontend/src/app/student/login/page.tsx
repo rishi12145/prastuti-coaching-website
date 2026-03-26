@@ -1,10 +1,11 @@
 
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { useState } from "react";
 import { Header, Footer } from "@/components";
-import { API_BASE } from "@/lib/api";
 
 export default function StudentLoginPage() {
   const [step, setStep] = useState<"mobile" | "otp">("mobile");
@@ -24,23 +25,11 @@ export default function StudentLoginPage() {
     }
 
     setState((s) => ({ ...s, loading: true, error: "", success: "" }));
-    try {
-      const res = await fetch(`${API_BASE}/auth/send-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: state.mobile, requestedRole: "student" }),
-      });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.message ?? "Failed to send OTP");
+    // Simulate
+    setTimeout(() => {
       setStep("otp");
       setState((s) => ({ ...s, loading: false, success: "OTP sent. Please check your phone.", error: "" }));
-    } catch (err: unknown) {
-      setState((s) => ({
-        ...s,
-        loading: false,
-        error: err instanceof Error ? err.message : "Something went wrong.",
-      }));
-    }
+    }, 1000);
   };
 
   const verifyOtp = async (e: React.FormEvent) => {
@@ -51,23 +40,10 @@ export default function StudentLoginPage() {
     }
 
     setState((s) => ({ ...s, loading: true, error: "", success: "" }));
-    try {
-      const res = await fetch(`${API_BASE}/auth/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: state.mobile, code: state.code, requestedRole: "student" }),
-      });
-      const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.message ?? "OTP verification failed");
-      if (data?.token) localStorage.setItem("auth_token", data.token);
+    // Simulate
+    setTimeout(() => {
       setState((s) => ({ ...s, loading: false, success: "Logged in successfully.", error: "" }));
-    } catch (err: unknown) {
-      setState((s) => ({
-        ...s,
-        loading: false,
-        error: err instanceof Error ? err.message : "Something went wrong.",
-      }));
-    }
+    }, 1000);
   };
 
   return (

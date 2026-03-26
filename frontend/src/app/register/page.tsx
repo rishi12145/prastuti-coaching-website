@@ -1,9 +1,10 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState } from "react";
 import Link from "next/link";
 import { Header, Footer } from "@/components";
-import { API_BASE } from "@/lib/api";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -26,24 +27,8 @@ export default function RegisterPage() {
       return;
     }
     setForm((s) => ({ ...s, loading: true, error: "", success: "" }));
-    try {
-      const res = await fetch(`${API_BASE}/public/callback`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          mobile: form.mobile,
-          courseInterested: form.courseInterested,
-          email: form.email,
-          parentName: form.parentName,
-          class: form.class,
-          message: form.message,
-        }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.message ?? "Request failed");
-      }
+    // Simulate submission
+    setTimeout(() => {
       setForm((s) => ({
         ...s,
         name: "",
@@ -57,13 +42,7 @@ export default function RegisterPage() {
         error: "",
         success: "We have received your registration request. Our team will contact you shortly with next steps.",
       }));
-    } catch (err: unknown) {
-      setForm((s) => ({
-        ...s,
-        loading: false,
-        error: err instanceof Error ? err.message : "Something went wrong. Please try again.",
-      }));
-    }
+    }, 1000);
   };
 
   return (
