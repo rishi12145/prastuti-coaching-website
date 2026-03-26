@@ -1,9 +1,11 @@
+export const dynamic = "force-dynamic";
+
 import React from 'react';
 
 const AdminDashboard: React.FC = () => {
   const stats = [
-    { label: 'Total Students', value: 1245, icon: 'í±¨â€í¾“' },
-    { label: 'Total Courses', value: 38, icon: 'í³š' },
+    { label: 'Total Students', value: 1245, icon: 'ğŸ‘¨â€ğŸ“' },
+    { label: 'Total Courses', value: 38, icon: 'ğŸ“š' },
   ];
 
   const recentActivity = [
