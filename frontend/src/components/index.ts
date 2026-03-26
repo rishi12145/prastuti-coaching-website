@@ -1,0 +1,9 @@
+export { Header } from "./Header";
+export { SectionHeading } from "./SectionHeading";
+export { StatCard } from "./StatCard";
+export { CourseCard } from "./CourseCard";
+export { ResultCard } from "./ResultCard";
+export { RankerCard } from "./RankerCard";
+export { FacultyCard } from "./FacultyCard";
+export { Slider } from "./Slider";
+export { Footer } from "./Footer";
